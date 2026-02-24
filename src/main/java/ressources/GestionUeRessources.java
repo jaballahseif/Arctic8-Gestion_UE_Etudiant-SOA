@@ -3,6 +3,7 @@ package ressources;
 import entities.UniteEnseignement;
 import metiers.UniteEnseignementBusiness;
 
+import filtres.Secured;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -44,6 +45,7 @@ public class GestionUeRessources {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
+    @Secured
     @POST
     @Consumes(MediaType.APPLICATION_XML) // Keeping XML as per original file, though typically JSON is preferred. User
                                          // request implies finishing docx which likely asks for these.

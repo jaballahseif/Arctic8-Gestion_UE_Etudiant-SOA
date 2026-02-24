@@ -1,0 +1,123 @@
+{
+	"info": {
+		"_postman_id": "01c9a2c3-1d4e-4eab-92b1-af89ce2c7c5b",
+		"name": "Atelier 5 - JAX-RS Security",
+		"description": "Collection to test JAX-RS Token-Based Authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Authenticate (Get Token)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {",
+							"    pm.collectionVariables.set(\"jwt_token\", pm.response.text());",
+							"    console.log(\"Token saved: \" + pm.response.text());",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"maryem\",\n  \"password\": \"maryem\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/Gestion_UE_VF_war_exploded/rest/authentication",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"Gestion_UE_VF_war_exploded",
+						"rest",
+						"authentication"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Add UE (Secured)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/xml",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<uniteEnseignement>\n    <code>1</code>\n    <nom>SOA</nom>\n    <domaine>Informatique</domaine>\n    <semestre>2</semestre>\n</uniteEnseignement>"
+				},
+				"url": {
+					"raw": "http://localhost:8082/Gestion_UE_VF_war_exploded/rest/UE",  
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"Gestion_UE_VF_war_exploded",
+						"rest",
+						"UE"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Get UE (Unsecured List)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/Gestion_UE_VF_war_exploded/rest/UE",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",         
+					"path": [
+						"Gestion_UE_VF_war_exploded",
+						"rest",
+						"UE"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "jwt_token",
+			"value": ""
+		}
+	]
+}
